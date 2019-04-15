@@ -10,23 +10,23 @@ const getUserById = (id) => {
       .first();
 };
 
-const addUser = async (user) => {
-  const [id] = await db('users').insert(user);
-  return db('users').where({ id }).first();
-};
+// const addUser = async (user) => {
+//   const [id] = await db('users').insert(user);
+//   return db('users').where({ id }).first();
+// };
 
 const deleteUser = (id) => {
   return db('users').where({ id }).del();
 };
 
-const editUser = (user, id) => {
-  return db('users').where({ id }).update(user);
+const editUser = (changes, id) => {
+  return db('users').where({ id }).update(changes);
 };
 
 module.exports = {
   getUsers,
   getUserById,
-  addUser,
+  // addUser,
   deleteUser,
   editUser,
 };
