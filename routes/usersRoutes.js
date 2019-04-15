@@ -29,4 +29,19 @@ router.get('/:id', (req, res) => {
       });
 });
 
+router.delete('/:id', (req, res) => {
+  const { id } = req.params;
+  Users.deleteUser(id)
+      .then((data) => {
+        if(!data) {
+          res.status(404).json({ message: 'The user with the specified ID does not exist.' });
+        } else {
+          res.status(200).json({ message: `The user with the id ${id} has now been removed from the database.` });
+        }
+      })
+      .catch((error) => {
+        res.status(500).json({ errorMessage: 'The user could not be removed.' });
+      });
+});
+
 module.exports = router;
