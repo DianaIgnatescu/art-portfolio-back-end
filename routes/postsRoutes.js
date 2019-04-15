@@ -59,3 +59,22 @@ router.post('/', (req, res) => {
       res.status(500).json({ error: 'There was an error while saving the post to the database.'});
     });
 });
+
+router.delete('/:id', (req, res) => {
+  const { id } = req.params;
+  Posts.deletePost(id)
+    .then((data) => {
+      if (!data) {
+        res.status(404).json({ message: 'The post with the specified ID does not exist.' });
+      } else {
+        res.status(200).json({ message: `The post with the ID ${id} has now been removed from the database.` });
+      }
+    })
+    .catch((error) => {
+      res.status(500).json({ errorMessage: 'The post could not be removed.' });
+    });
+});
+
+
+
+module.exports = router;
