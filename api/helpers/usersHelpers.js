@@ -19,8 +19,8 @@ const deleteUser = (id) => {
   return db('users').where({ id }).del();
 };
 
-const editUser = (changes, id) => {
-  return db('users').where({ id }).update(changes);
+const editUser = (user, id) => {
+  return db('users').where({ id }).update(user);
 };
 
 module.exports = {
