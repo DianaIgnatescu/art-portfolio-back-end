@@ -11,9 +11,9 @@ server.use(cors());
 server.use(express.json());
 
 const auth = require('../routes/authRoutes');
-
+const users = require('../routes/usersRoutes');
 server.use('/api', auth);
-
+server.use('/api/users', users);
 server.get('/api', authenticate, (req, res) => {
   res.status(200).json({ data: 'The server is up and running!'});
 });
