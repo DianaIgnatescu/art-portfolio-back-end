@@ -37,11 +37,18 @@ const editPost = (post, id) => {
     .update(post);
 };
 
+const upvote = (upvoteCount, id) => {
+  return db('posts')
+      .where({ id })
+      .update({ upvotes: upvoteCount + 1 })
+};
+
 module.exports = {
   getPosts,
   getPostById,
   getPostsFromUser,
   addPost,
   deletePost,
-  editPost
+  editPost,
+  upvote
 };
