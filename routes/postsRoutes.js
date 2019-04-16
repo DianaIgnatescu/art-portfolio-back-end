@@ -103,6 +103,40 @@ router.put('/upvote/:id', async (req, res) => {
       .catch((error) => {
         res.status(500).json({errorMessage: 'The post could not be upvoted.' });
       });
+router.put('/upvote/:postId/:userId', async (req, res) => {
+  const { postId, userId } = req.params;
+  try {
+    const post = await Posts.getPostById(postId);
+    if (!post) {
+      throw new Error('Post not found');
+    }
+    const user = await Users.getUserById(userId);
+    if (!user) {
+      throw new Error('User not found');
+    }
+    const result = await Posts.upvote(userId, postId);
+    res.status(200).json({ success: true, userId, postId });
+  } catch (error) {
+    res.status(500).json({ errorMessage: error.message });
+  }
+});
+
+router.put('/downvote/:postId/:userId', async (req, res) => {
+  const { postId, userId } = req.params;
+  try {
+    const post = await Posts.getPostById(postId);
+    if (!post) {
+      throw new Error('Post not found');
+    }
+    const user = await Users.getUserById(userId);
+    if (!user) {
+      throw new Error('User not found');
+    }
+    const result = await Posts.downvote(userId, postId);
+    res.status(200).json({ success: true, userId, postId });
+  } catch (error) {
+    res.status(500).json({ errorMessage: error.message });
+  }
 });
 
 module.exports = router;
