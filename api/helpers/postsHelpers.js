@@ -6,17 +6,13 @@ const getPosts = () => {
 
 const getPostById = (id) => {
   return db('posts')
-      .where({ id})
-      .first();
+    .where({ id})
+    .first();
 };
 
 const getPostsFromUser = (id) => {
-  // return db('posts as p')
-  //   .join('users as u', 'u.id', 'p.user_id')
-  //   .select('p.id', 'p.text', 'u.name as postedBy')
-  //   .where('p.user_id', userId);
   return db('posts')
-      .where({ userId: id })
+    .where({ userId: id })
 };
 
 const addPost = (post) => {
@@ -62,9 +58,9 @@ const upvote = async (userId, postId) => {
 
 const downvote = async (userId, postId) => {
   const query = await db('likes')
-      .where({ postId })
-      .where({ userId })
-      .count('id as CNT');
+    .where({ postId })
+    .where({ userId })
+    .count('id as CNT');
 
   const total = query[0]['CNT'];
 
@@ -72,10 +68,10 @@ const downvote = async (userId, postId) => {
     throw new Error('Like not in database');
   } else {
     return await db('likes')
-        .where({ postId })
-        .where({ userId })
-        .first()
-        .del();
+      .where({ postId })
+      .where({ userId })
+      .first()
+      .del();
   }
 };
 
