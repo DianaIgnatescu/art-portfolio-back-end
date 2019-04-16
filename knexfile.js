@@ -5,7 +5,7 @@ module.exports = {
   development: {
     client: 'sqlite3',
     connection: {
-      filename: './data/art-portfolio.sqlite3'
+      filename: './data/art-portfolio.sqlite3',
     },
     useNullAsDefault: true,
     migrations: {
@@ -34,16 +34,16 @@ module.exports = {
     client: 'postgresql',
     connection: {
       database: 'art-portfolio',
-      user:     'username',
-      password: 'password'
+      user: 'username',
+      password: 'password',
     },
     pool: {
       min: 2,
-      max: 10
+      max: 10,
     },
     migrations: {
       directory: './data/migrations',
     },
-    useNullAsDefault: true
-  }
+    useNullAsDefault: true,
+  },
 };
