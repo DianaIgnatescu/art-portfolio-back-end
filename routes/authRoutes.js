@@ -11,7 +11,7 @@ router.post('/register', (req, res) => {
   const hashedPw = bcrypt.hashSync(user.password, 10);
   user.password = hashedPw;
   if (!username || !password || !email) {
-    res.status(400).json({ errorMessage: 'Missing username or password.'})
+    res.status(400).json({ errorMessage: 'Missing required fields.'})
   } else {
     db('users').insert(user)
       .then(arrayOfIds => {
