@@ -15,7 +15,7 @@ const users = require('../routes/usersRoutes');
 const posts = require('../routes/postsRoutes');
 
 server.use('/api', auth);
-server.use('/api/users', users);
+server.use('/api/users', authenticate, users);
 server.use('/api/posts', posts);
 
 server.get('/api', authenticate, (req, res) => {
