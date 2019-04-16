@@ -2,7 +2,7 @@ const request = require('supertest');
 const server = require('../api/server');
 const db = require('../data/dbConfig');
 
-describe('authRoutes', () => {
+xdescribe('authRoutes', () => {
   it('should set the testing environment', () => {
     expect(process.env.DB_ENV).toBe('testing');
   });
@@ -64,3 +64,90 @@ describe('authRoutes', () => {
         });
     })
   });
+
+  describe('POST, /api/login', () => {
+    afterEach(async () => {
+      await db('users').truncate();
+    });
+
+    it('should return status code 200 OK when request is successful', async () => {
+      const newUser = { username: 'Test1', password: 'password1', email: 'test@email.com' };
+      const user = await request(server).post("/api/register").send(newUser);
+      const response = await request(server).post("/api/login").send({ username: newUser.username, password: newUser.password });
+      expect(response.status).toBe(200);
+    });
+    it('should return JSON', async () => {
+      const newUser = { username: 'Test1', password: 'password1', email: 'test@email.com' };
+      const user = await request(server).post('/api/register').send(newUser);
+      const response = await request(server).post('/api/login').send({ username: newUser.username, password: newUser.password });
+      expect(response.type).toBe('application/json');
+    });
+    it('should return a token when the request is successful', async () => {
+      const newUser = { username: 'Test1', password: 'password1', email: 'test@email.com' };
+      await request(server).post("/api/register").send(newUser);
+
+      return request(server).post("/api/login").send({ username: newUser.username, password: newUser.password })
+        .then(response => {
+          expect(response.body.token).toBeTruthy();
+        });
+    });
+    it('should return status code 400 Bad Request if username is missing', async () => {
+      const newUser = { username: '', password: 'password' };
+      const response = await request(server).post('/api/login').send(newUser);
+      expect(response.status).toBe(400);
+    });
+    it('should return status code 400 Bad Request if password is missing', async () => {
+      const newUser = { username: 'Test', password: '' };
+      const response = await request(server).post('/api/login').send(newUser);
+      expect(response.status).toBe(400);
+    });
+    it('should return errorMessage: "Missing username or password." if username is missing', async () => {
+      const newUser = { username: '', password: 'password1', email: 'test@email.com' };
+      const user = await request(server).post('/api/register').send(newUser);
+
+      return request(server).post('/api/login').send(newUser)
+        .then(response => {
+          expect(response.body.errorMessage).toEqual('Missing username or password.');
+        });
+    });
+    it('should return errorMessage: "Missing username or password." if password is missing', async () => {
+      const newUser = { username: 'Test', password: '', email: 'test@email.com' };
+      const user = await request(server).post('/api/register').send(newUser);
+
+      return request(server).post('/api/login').send(newUser)
+        .then(response => {
+          expect(response.body.errorMessage).toEqual('Missing username or password.');
+        });
+    });
+    it('should return status code 401 Bad Request if username is incorrect', async () => {
+      const newUser = { username: 'Test', password: 'password', email: 'test@email.com' };
+      const user = await request(server).post("/api/register").send(newUser);
+      const response = await request(server).post("/api/login").send({ username: 'IncorrectUsername', password: newUser.password })
+      expect(response.status).toBe(401);
+    });
+    it('should return errorMessage if username is incorrect', async () => {
+      const newUser = { username: 'Test', password: 'password', email: 'test@email.com' };
+      const user = await request(server).post("/api/register").send(newUser);
+      return request(server).post("/api/login").send({ username: 'IncorrectUsername', password: newUser.password })
+        .then(response => {
+          expect(response.body.message).toEqual('Invalid credentials.');
+        });
+    });
+    it('should return status code 401 Bad Request if password is incorrect', async () => {
+      const newUser = { username: 'Test', password: 'password', email: 'test@email.com' };
+      const user = await request(server).post("/api/register").send(newUser);
+      const response = await request(server).post("/api/login").send({ username: newUser.username, password: 'notPassword' });
+      expect(response.status).toBe(401);
+    });
+    it('should return errorMessage: "Invalid credentials." if password is incorrect', async () => {
+      const newUser = { username: 'Test', password: 'password', email: 'test@email.com' };
+      const user = await request(server).post("/api/register").send(newUser);
+      return request(server).post("/api/login").send({ username: newUser.username, password: 'notPassword' })
+        .then(response => {
+          expect(response.body.message).toEqual('Invalid credentials.');
+        });
+    });
+  });
+});
+
+
