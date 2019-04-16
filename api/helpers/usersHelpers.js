@@ -10,11 +10,6 @@ const getUserById = (id) => {
       .first();
 };
 
-// const addUser = async (user) => {
-//   const [id] = await db('users').insert(user);
-//   return db('users').where({ id }).first();
-// };
-
 const deleteUser = (id) => {
   return db('users').where({ id }).del();
 };
@@ -26,7 +21,6 @@ const editUser = (user, id) => {
 module.exports = {
   getUsers,
   getUserById,
-  // addUser,
   deleteUser,
   editUser,
 };
