@@ -37,10 +37,44 @@ const editPost = (post, id) => {
     .update(post);
 };
 
-const upvote = (upvoteCount, id) => {
-  return db('posts')
-      .where({ id })
-      .update({ upvotes: upvoteCount + 1 })
+const getUpvotes = async (postId) => {
+  const query = await db('likes').where({ postId }).count('id as CNT');
+  const total = query[0]['CNT'];
+  return total;
+};
+
+const upvote = async (userId, postId) => {
+  const query = await db('likes')
+    .where({ postId })
+    .where({ userId })
+    .count('id as CNT');
+
+  const total = query[0]['CNT'];
+
+  if (total) {
+    throw new Error('Like already in database');
+  } else {
+    return await db('likes').insert({ userId, PostId: postId });
+  }
+};
+
+const downvote = async (userId, postId) => {
+  const query = await db('likes')
+      .where({ postId })
+      .where({ userId })
+      .count('id as CNT');
+
+  const total = query[0]['CNT'];
+
+  if (!total) {
+    throw new Error('Like not in database');
+  } else {
+    return await db('likes')
+        .where({ postId })
+        .where({ userId })
+        .first()
+        .del();
+  }
 };
 
 module.exports = {
@@ -50,5 +84,7 @@ module.exports = {
   addPost,
   deletePost,
   editPost,
-  upvote
+  upvote,
+  downvote,
+  getUpvotes,
 };

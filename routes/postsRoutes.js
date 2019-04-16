@@ -92,17 +92,12 @@ router.put('/:id', (req, res) => {
     });
 });
 
-router.put('/upvote/:id', async (req, res) => {
-  const { id } = req.params;
-  const post = await Posts.getPostById(id);
-  const upvotes = post.upvotes;
-    Posts.upvote (upvotes, id)
-      .then((data) => {
-        res.status(200).json({ ...post, upvotes: upvotes + 1})
-      })
-      .catch((error) => {
-        res.status(500).json({errorMessage: 'The post could not be upvoted.' });
-      });
+router.get('/upvotes/:postId', async (req, res) => {
+  const { postId } = req.params;
+  const likes = await Posts.getUpvotes(postId);
+  res.status(200).json({ success: true, postId, likes });
+});
+
 router.put('/upvote/:postId/:userId', async (req, res) => {
   const { postId, userId } = req.params;
   try {
