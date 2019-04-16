@@ -2,7 +2,7 @@ const db = require('../../data/dbConfig');
 const Users = require('../../api/helpers/usersHelpers');
 const Auth = require('../../api/helpers/authHelpers');
 
-describe('usersHelpers', () => {
+xdescribe('usersHelpers', () => {
   afterEach(async () => {
     await db('users').truncate();
   });

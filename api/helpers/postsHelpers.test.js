@@ -1,7 +1,7 @@
 const db = require('../../data/dbConfig');
 const Posts = require('../../api/helpers/postsHelpers');
 
-describe('postsHelpers', () => {
+xdescribe('postsHelpers', () => {
   afterEach(async () => {
     await db('posts').truncate();
   });
