@@ -7,6 +7,18 @@ const db = require('../data/dbConfig');
 const Posts = require('../api/helpers/postsHelpers');
 const Users = require('../api/helpers/usersHelpers');
 
+const combinePostsWithUpvotes = (posts, likes) => posts.map((post) => {
+  const upvotes = likes
+    .filter(like => like.postId === post.id)
+    .map(like => like.userId)
+    .concat()
+    .sort();
+  return {
+    ...post,
+    upvotes,
+  };
+});
+
 router.get('/', (req, res) => {
   if (req.query && req.query.userId) {
     Posts.getPostsFromUser(req.query.userId)
@@ -14,7 +26,9 @@ router.get('/', (req, res) => {
         if (!posts) {
           res.status(404).json({ message: 'The user with the specified ID does not have any posts' });
         } else {
-          res.status(200).json(posts)
+          Posts.getAllUpvotes().then((likes) => {
+            res.status(200).json(combinePostsWithUpvotes(posts, likes));
+          });
         }
       })
       .catch((error) => {
@@ -23,7 +37,9 @@ router.get('/', (req, res) => {
   } else {
     Posts.getPosts()
       .then((posts) => {
-        res.status(200).json(posts);
+        Posts.getAllUpvotes().then((likes) => {
+          res.status(200).json(combinePostsWithUpvotes(posts, likes));
+        });
       })
       .catch((error) => {
         res.status(500).json({ error: 'The posts could not be retrieved.' });
