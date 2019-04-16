@@ -10,11 +10,13 @@ const getPostById = (id) => {
       .first();
 };
 
-const getPostsFromUser = (userId) => {
-  return db('posts as p')
-    .join('users as u', 'u.id', 'p.user_id')
-    .select('p.id', 'p.text', 'u.name as postedBy')
-    .where('p.user_id', userId);
+const getPostsFromUser = (id) => {
+  // return db('posts as p')
+  //   .join('users as u', 'u.id', 'p.user_id')
+  //   .select('p.id', 'p.text', 'u.name as postedBy')
+  //   .where('p.user_id', userId);
+  return db('posts')
+      .where({ userId: id })
 };
 
 const addPost = (post) => {
