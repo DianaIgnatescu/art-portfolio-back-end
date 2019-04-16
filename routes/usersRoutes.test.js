@@ -3,10 +3,9 @@ const server = require('../api/server');
 const db = require('../data/dbConfig');
 
 describe('usersRoutes', () => {
-
   let token;
   beforeAll(async () => {
-    const admin = {username: 'admin', password: 'admin', email: 'admin@email.com'};
+    const admin = { username: 'admin', password: 'admin', email: 'admin@email.com' };
     await request(server).post('/api/register').send(admin);
     const res = await request(server).post('/api/login').send({ username: admin.username, password: admin.password });
     token = JSON.parse(res.text).token;
@@ -35,7 +34,7 @@ describe('usersRoutes', () => {
     it('should return status code 200 when request is successful', async () => {
 
     });
-    it('should return the correct response body', () =>{
+    it('should return the correct response body', () => {
 
     });
     it('should return 404 if user with a specific id does not exist', async () => {
@@ -68,5 +67,4 @@ describe('usersRoutes', () => {
 
     });
   });
-
 });

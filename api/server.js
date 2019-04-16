@@ -19,7 +19,7 @@ server.use('/api/users', authenticate, users);
 server.use('/api/posts', posts);
 
 server.get('/api', authenticate, (req, res) => {
-  res.status(200).json({ data: 'The server is up and running!'});
+  res.status(200).json({ data: 'The server is up and running!' });
 });
 
 module.exports = server;

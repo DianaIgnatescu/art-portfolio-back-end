@@ -1,6 +1,7 @@
-const { authenticate } = require('../authenticate');
 const express = require('express');
 const bcrypt = require('bcryptjs');
+const { authenticate } = require('../authenticate');
+
 const router = express.Router();
 const db = require('../data/dbConfig');
 const Posts = require('../api/helpers/postsHelpers');
@@ -25,7 +26,7 @@ router.get('/', (req, res) => {
         res.status(200).json(posts);
       })
       .catch((error) => {
-        res.status(500).json({ error: 'The posts could not be retrieved.'});
+        res.status(500).json({ error: 'The posts could not be retrieved.' });
       });
   }
 });
@@ -35,28 +36,32 @@ router.get('/:id', (req, res) => {
   Posts.getPostById(id)
     .then((post) => {
       if (!post) {
-        res.status(404).json({ message: 'The post with the specified ID does not exist.'});
+        res.status(404).json({ message: 'The post with the specified ID does not exist.' });
       } else {
         res.status(200).json(post);
       }
     })
     .catch((error) => {
-      res.status(500).json({ error: 'The post information could not be retrieved.'});
+      res.status(500).json({ error: 'The post information could not be retrieved.' });
     });
 });
 
 router.post('/', authenticate, (req, res) => {
-  const { postName, userId, imageUrl, description, upvotes } = req.body;
+  const {
+    postName, userId, imageUrl, description, upvotes,
+  } = req.body;
   const post = req.body;
   if (!postName || !userId || !imageUrl) {
-    res.status(400).json({ errorMessage: 'Please provide information for the post.'});
+    res.status(400).json({ errorMessage: 'Please provide information for the post.' });
   }
-  Posts.addPost({ postName, userId, imageUrl, description, upvotes: 0 })
+  Posts.addPost({
+    postName, userId, imageUrl, description, upvotes: 0,
+  })
     .then((post) => {
       res.status(201).json(post);
     })
     .catch((error) => {
-      res.status(500).json({ error: 'There was an error while saving the post to the database.'});
+      res.status(500).json({ error: 'There was an error while saving the post to the database.' });
     });
 });
 
@@ -78,13 +83,15 @@ router.delete('/:id', authenticate, (req, res) => {
 router.put('/:id', authenticate, (req, res) => {
   const { id } = req.params;
   const post = req.body;
-  const { postName, userId, imageUrl, description, upvotes } = req.body;
+  const {
+    postName, userId, imageUrl, description, upvotes,
+  } = req.body;
   Posts.editPost(post, id)
     .then((data) => {
       if (!data) {
         res.status(404).json({ message: 'The post with the specified id does not exist.' });
       } else {
-        res.status(200).json({ post: { id, ...post} });
+        res.status(200).json({ post: { id, ...post } });
       }
     })
     .catch((error) => {
@@ -94,8 +101,8 @@ router.put('/:id', authenticate, (req, res) => {
 
 router.get('/upvotes/:postId', async (req, res) => {
   const { postId } = req.params;
-  const likes = await Posts.getUpvotes(postId);
-  res.status(200).json({ success: true, postId, likes });
+  const upvotes = await Posts.getUpvotes(postId);
+  res.status(200).json({ success: true, postId, upvotes });
 });
 
 router.put('/upvote/:postId/:userId', async (req, res) => {

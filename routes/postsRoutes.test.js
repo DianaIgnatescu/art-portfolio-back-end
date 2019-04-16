@@ -5,7 +5,7 @@ const db = require('../data/dbConfig');
 describe('postsRoutes', () => {
   let token;
   beforeAll(async () => {
-    const admin = {username: 'admin', password: 'admin', email: 'admin@email.com'};
+    const admin = { username: 'admin', password: 'admin', email: 'admin@email.com' };
     await request(server).post('/api/register').send(admin);
     const res = await request(server).post('/api/login').send({ username: admin.username, password: admin.password });
     token = JSON.parse(res.text).token;

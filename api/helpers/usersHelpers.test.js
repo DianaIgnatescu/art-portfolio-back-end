@@ -14,7 +14,7 @@ xdescribe('usersHelpers', () => {
   });
 
   describe('getUserById', () => {
-    it('should return a given user from the database by its ID',async () => {
+    it('should return a given user from the database by its ID', async () => {
       const newUser = Auth.registerUser({ username: 'Test', password: 'password', email: 'test@email.com' });
       const result = await Users.getUserById(1);
       expect(result.username).toEqual('Test');
@@ -23,7 +23,7 @@ xdescribe('usersHelpers', () => {
   });
 
   describe('deleteUser', () => {
-    it('should delete a given user record from the the database', async() => {
+    it('should delete a given user record from the the database', async () => {
       const newUser1 = Auth.registerUser({ username: 'Test1', password: 'password1', email: 'test1@email.com' });
       const newUsert2 = Auth.registerUser({ username: 'Test2', password: 'password2', email: 'test2@email.com' });
       const result = await Users.deleteUser(1);
@@ -38,4 +38,3 @@ xdescribe('usersHelpers', () => {
     });
   });
 });
-
