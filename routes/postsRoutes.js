@@ -45,13 +45,13 @@ router.get('/:id', (req, res) => {
     });
 });
 
-router.post('/', (req, res) => {
+router.post('/', authenticate, (req, res) => {
   const { postName, userId, imageUrl, description, upvotes } = req.body;
   const post = req.body;
   if (!postName || !userId || !imageUrl) {
     res.status(400).json({ errorMessage: 'Please provide information for the post.'});
   }
-  Posts.addPost({ postName, userId, imageUrl, description, upvotes })
+  Posts.addPost({ postName, userId, imageUrl, description, upvotes: 0 })
     .then((post) => {
       res.status(201).json(post);
     })
@@ -60,7 +60,7 @@ router.post('/', (req, res) => {
     });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', authenticate, (req, res) => {
   const { id } = req.params;
   Posts.deletePost(id)
     .then((data) => {
@@ -75,7 +75,7 @@ router.delete('/:id', (req, res) => {
     });
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', authenticate, (req, res) => {
   const { id } = req.params;
   const post = req.body;
   const { postName, userId, imageUrl, description, upvotes } = req.body;
