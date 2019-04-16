@@ -6,5 +6,5 @@ const registerUser = async (user) => {
 };
 
 module.exports = {
-  registerUser
+  registerUser,
 };
