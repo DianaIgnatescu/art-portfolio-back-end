@@ -64,17 +64,17 @@ router.get('/:id', (req, res) => {
 
 router.post('/', authenticate, (req, res) => {
   const {
-    postName, userId, imageUrl, description, upvotes,
+    postName, userId, imageUrl, description,
   } = req.body;
   const post = req.body;
   if (!postName || !userId || !imageUrl) {
     res.status(400).json({ errorMessage: 'Please provide information for the post.' });
   }
   Posts.addPost({
-    postName, userId, imageUrl, description, upvotes: 0,
+    postName, userId, imageUrl, description,
   })
-    .then((post) => {
-      res.status(201).json(post);
+    .then((newPost) => {
+      res.status(201).json(newPost);
     })
     .catch((error) => {
       res.status(500).json({ error: 'There was an error while saving the post to the database.' });
