@@ -64,9 +64,9 @@ router.get('/:id', (req, res) => {
 
 router.post('/', authenticate, (req, res) => {
   const {
-    postName, userId, imageUrl, description,
+    postName, imageUrl, description,
   } = req.body;
-  const post = req.body;
+  const userId = req.decoded.subject;
   if (!postName || !userId || !imageUrl) {
     res.status(400).json({ errorMessage: 'Please provide information for the post.' });
   }
