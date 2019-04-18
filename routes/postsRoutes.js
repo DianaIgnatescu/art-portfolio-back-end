@@ -74,7 +74,7 @@ router.post('/', authenticate, (req, res) => {
     postName, userId, imageUrl, description,
   })
     .then((newPost) => {
-      res.status(201).json(newPost);
+      res.status(201).json({ ...newPost, upvotes: [] });
     })
     .catch((error) => {
       res.status(500).json({ error: 'There was an error while saving the post to the database.' });
