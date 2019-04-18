@@ -3,8 +3,6 @@ const helmet = require('helmet');
 const cors = require('cors');
 const { authenticate, jwtKey } = require('../authenticate');
 
-const db = require('../data/dbConfig');
-
 const server = express();
 server.use(helmet());
 server.use(cors());

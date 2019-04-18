@@ -52,10 +52,4 @@ describe('usersHelpers', () => {
       expect(row).toHaveLength(1);
     });
   });
-
-  xdescribe('editUser', () => {
-    it('should edit a given user record in the database', async () => {
-
-    });
-  });
 });

@@ -127,7 +127,7 @@ describe('postsRoutes', () => {
         postName: 'Test',
         description: 'This is a test',
         imageUrl: 'https://loremflickr.com/320/240',
-        userId: 2,
+        userId: 1,
       };
       const response = await request(server)
         .post('/api/posts')
@@ -138,6 +138,7 @@ describe('postsRoutes', () => {
         postName: 'Test',
         description: 'This is a test',
         imageUrl: 'https://loremflickr.com/320/240',
+        upvotes: [],
         userId: 1,
       });
     });
@@ -249,7 +250,6 @@ describe('postsRoutes', () => {
         postName: 'Test post2',
         description: 'This is a test2',
         imageUrl: 'https://loremflickr.com/320/240',
-        userId: 1,
       })
         .then((response) => {
           expect(response.status).toBe(200);

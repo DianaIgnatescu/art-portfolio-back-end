@@ -104,28 +104,5 @@ describe('postsHelpers', () => {
       const actual = await Posts.deletePost(11);
       expect(actual).toEqual(0);
     });
-
-    xdescribe('editPost', () => {
-      it('should edit the given post', async () => {
-
-      });
-    });
-
-    xdescribe('upvote', () => {
-      it('should save a like from a specific user for a post into the database', async () => {
-
-      });
-    });
-    xdescribe('downvote', () => {
-      it('should remove a like from a specific user for a post from the database', async () => {
-
-      });
-    });
-
-    xdescribe('getUpvotes', () => {
-      it('should return the number of likes a post has received from the database', async () => {
-
-      });
-    });
   });
 });
