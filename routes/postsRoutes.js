@@ -112,7 +112,7 @@ router.put('/:id', authenticate, async (req, res) => {
       res.status(404).json({ message: 'The post with the specified id does not exist.' });
     } else {
       const likes = await Posts.getAllUpvotes(id);
-      const updatedPost = { ...post, postId: Number(id), userId };
+      const updatedPost = { ...post, id: Number(id), userId };
       const updatedPostWithUpvotes = combinePostWithUpvotes(updatedPost, likes);
       res.status(200).json(updatedPostWithUpvotes);
     }
