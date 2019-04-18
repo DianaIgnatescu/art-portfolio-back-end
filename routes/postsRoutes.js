@@ -127,7 +127,7 @@ router.get('/upvotes/:postId', async (req, res) => {
   res.status(200).json({ success: true, postId, upvotes });
 });
 
-router.put('/upvote/:postId', async (req, res) => {
+router.put('/upvote/:postId', authenticate, async (req, res) => {
   const { postId } = req.params;
   const userId = req.decoded.subject;
   try {
@@ -146,7 +146,7 @@ router.put('/upvote/:postId', async (req, res) => {
   }
 });
 
-router.put('/downvote/:postId', async (req, res) => {
+router.put('/downvote/:postId', authenticate, async (req, res) => {
   const { postId } = req.params;
   const userId = req.decoded.subject;
   try {
