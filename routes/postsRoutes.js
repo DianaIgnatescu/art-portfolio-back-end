@@ -96,21 +96,21 @@ router.delete('/:id', authenticate, (req, res) => {
     });
 });
 
-router.put('/:id', authenticate, (req, res) => {
+router.put('/:id', authenticate, async (req, res) => {
   const { id } = req.params;
   const post = req.body;
   const userId = req.decoded.subject;
-  Posts.editPost(post, id)
-    .then((data) => {
-      if (!data) {
-        res.status(404).json({ message: 'The post with the specified id does not exist.' });
-      } else {
-        res.status(200).json({ ...post, postId: Number(id), userId });
-      }
-    })
-    .catch((error) => {
-      res.status(500).json({ error: 'The post information could not be modified.' });
-    });
+  try {
+    const data = await Posts.editPost(post, id);
+    if (!data) {
+      res.status(404).json({ message: 'The post with the specified id does not exist.' });
+    } else {
+      const upvotes = await Posts.getUpvotes(id);
+      res.status(200).json({ ...post, postId: Number(id), userId, upvotes });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'The post information could not be modified.' });
+  }
 });
 
 router.get('/upvotes/:postId', async (req, res) => {
