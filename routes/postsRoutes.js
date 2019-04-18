@@ -99,13 +99,13 @@ router.delete('/:id', authenticate, (req, res) => {
 router.put('/:id', authenticate, (req, res) => {
   const { id } = req.params;
   const post = req.body;
+  const userId = req.decoded.subject;
   Posts.editPost(post, id)
     .then((data) => {
       if (!data) {
         res.status(404).json({ message: 'The post with the specified id does not exist.' });
       } else {
-        // res.status(200).json({ id, ...post, userId });
-        res.status(200).json(req.decoded);
+        res.status(200).json({ ...post, postId: id, userId });
       }
     })
     .catch((error) => {
