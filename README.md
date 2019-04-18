@@ -2,11 +2,11 @@
 
 **Back End URL**: https://art-portfolio-project-back-end.herokuapp.com
 
-###Usage
+### Usage
 
-##Credentials
+## Credentials
 
-###Register a user
+### Register a user
 
 *method url*: `/api/register`
 
