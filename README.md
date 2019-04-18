@@ -4,7 +4,7 @@
 
 **Front End URL**: https://art-portfolio-project-front-end.netlify.com
 
-### Usage
+### _Usage_
 
 ## Credentials
 
@@ -90,15 +90,14 @@
 ##### 200 (OK)
 ###### Example response
 ```
-{
-    "userId": 8,
-    "username": "Marion",
-    "email": "marion@email.com",
-    "message": "Welcome Marion!",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
-    eyJzdWJqZWN0Ijo4LCJ1c2VybmFtZSI6Ik1hcmlvbiIsImVtYWlsIjoibWFyaW9uQGVtYWlsLmNvbSIsImlhdCI6MTU1NTU5MTQ5MCwiZXhwIjo
-    xNTU1NTk1MDkwfQ.Fp9bi1df7xNNJ63rihGI0sP4WHV-F5E5rf0DPF3zXD8"
-}
+  {
+    "userId": 5,
+    "username": "Elliot",
+    "email": "elliot@gmail.com",
+    "message": "Welcome Elliot!",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0Ijo1LCJ1c2VybmFtZSI6IkVsbGlvdCIsImVtYWlsIjoiZWxsaW9
+    0QGdtYWlsLmNvbSIsImlhdCI6MTU1NTYyMTQ4NCwiZXhwIjoxNTU1NjI1MDg0fQ.k4XzOQi-eElnSkdqReipzowTMugtvjiNcHkxH8kdIfw"
+  }
 ```
 ##### 400 (Bad Request)
 ```
@@ -132,58 +131,47 @@
   ###### Example response
   ```
   [
-      {
-          "id": 1,
-          "username": "Diana",
-          "password": "$2a$10$vBEEx72D56pUbuzQ0ne5VeeHzkhpi/i7YzVsKOP/N5OAoFSGN7ifi",
-          "email": "diana@gmail.com"
-      },
-      {
-          "id": 2,
-          "username": "Carmen",
-          "password": "$2a$10$vBEEx72D56pUbuzQ0ne5VeeHzkhpi/i7YzVsKOP/N5OAoFSGN7ifi",
-          "email": "carmen@gmail.com"
-      },
-      {
-          "id": 3,
-          "username": "Louis",
-          "password": "$2a$10$vBEEx72D56pUbuzQ0ne5VeeHzkhpi/i7YzVsKOP/N5OAoFSGN7ifi",
-          "email": "Louis@gmail.com"
-      },
-      {
-          "id": 4,
-          "username": "John",
-          "password": "$2a$10$vBEEx72D56pUbuzQ0ne5VeeHzkhpi/i7YzVsKOP/N5OAoFSGN7ifi",
-          "email": "john@gmail.com"
-      },
-      {
-          "id": 5,
-          "username": "Elliot",
-          "password": "$2a$10$vBEEx72D56pUbuzQ0ne5VeeHzkhpi/i7YzVsKOP/N5OAoFSGN7ifi",
-          "email": "elliot@gmail.com"
-      },
-      {
-          "id": 6,
-          "username": "admin",
-          "password": "$2a$10$3HdDite5vdm1T5lVIHu..OXdLoBxRIsIw.gf6OI7Ztff34hJ/dotC",
-          "email": "admin@email.com"
-      },
-      {
-          "id": 7,
-          "username": "Benedict",
-          "password": "$2a$10$KCAhNOChS.YBR67fTmJcyuxgB2p6kOCB3HHQOyC0mg34PlNtE.nci",
-          "email": "benedict@gmail.com"
-      },
-      {
-          "id": 8,
-          "username": "Marion",
-          "password": "$2a$10$9KJzGKr.nPQ3iKpAxGGD6u2xwdk2c7OnLxiuk0Tcs5efSIqLOrlxq",
-          "email": "marion@email.com"
-      }
+    {
+      "id": 1,
+      "username": "Diana",
+      "password": "$2a$10$vBEEx72D56pUbuzQ0ne5VeeHzkhpi/i7YzVsKOP/N5OAoFSGN7ifi",
+      "email": "diana@gmail.com"
+    },
+    {
+      "id": 2,
+      "username": "Carmen",
+      "password": "$2a$10$vBEEx72D56pUbuzQ0ne5VeeHzkhpi/i7YzVsKOP/N5OAoFSGN7ifi",
+      "email": "carmen@gmail.com"
+    },
+    {
+      "id": 3,
+      "username": "Louis",
+      "password": "$2a$10$vBEEx72D56pUbuzQ0ne5VeeHzkhpi/i7YzVsKOP/N5OAoFSGN7ifi",
+      "email": "Louis@gmail.com"
+    },
+    {
+      "id": 4,
+      "username": "John",
+      "password": "$2a$10$vBEEx72D56pUbuzQ0ne5VeeHzkhpi/i7YzVsKOP/N5OAoFSGN7ifi",
+      "email": "john@gmail.com"
+    },
+    {
+      "id": 5,
+      "username": "Elliot",
+      "password": "$2a$10$vBEEx72D56pUbuzQ0ne5VeeHzkhpi/i7YzVsKOP/N5OAoFSGN7ifi",
+      "email": "elliot@gmail.com"
+    },
+    {
+      "id": 6,
+      "username": "Doug",
+      "password": "$2a$10$1eS0iEPTFWCHzS9hGAIvp.K5xbpvp5DMqkXNaTHoGt.y4qU3cK2i.",
+      "email": "doug@email.com"
+    }
   ]
   ```
   
   ### Get a single user
+  ***
   *method url*: `/api/users/:id`
   
   *http method*: **[GET]**
@@ -195,10 +183,10 @@
   ```
   [
     {
-        "id": 8,
-        "username": "Marion",
-        "password": "$2a$10$9KJzGKr.nPQ3iKpAxGGD6u2xwdk2c7OnLxiuk0Tcs5efSIqLOrlxq",
-        "email": "marion@email.com"
+      "id": 5,
+      "username": "Elliot",
+      "password": "$2a$10$vBEEx72D56pUbuzQ0ne5VeeHzkhpi/i7YzVsKOP/N5OAoFSGN7ifi",
+      "email": "elliot@gmail.com"
     }
   ]
   ```
@@ -209,10 +197,10 @@
   
   ```
   {
-      "message": "The user with the specified ID does not exist."
+    "message": "The user with the specified ID does not exist."
   }
   ```
-  ***
+  
   ### Delete a user
   ***
   *method url*: `/api/users/:id`
@@ -230,26 +218,26 @@
   ##### 200 (OK)
   ###### Example Response
   ```
-    {
-      "message": "The user with the id 9 has now been removed from the database."
-    }
+  {
+    "message": "The user with the id 9 has now been removed from the database."
+  }
   ```
   ##### 401 (Unauthorized)
   ###### Example Response
   ```
-    {
-      "error": "No token provided, must be set on the Authorization Header"
-    }
+  {
+    "error": "No token provided, must be set on the Authorization Header"
+  }
   ```
   ##### 403 (Forbidden)
   ###### Example Response
   ```
-    {
-      "name": "JsonWebTokenError",
-      "message": "invalid token"
-    }
+  {
+    "name": "JsonWebTokenError",
+    "message": "invalid token"
+  }
   ```
-  ***
+  
    ### Edit a user
    ***
 *method url*: `/api/users/:id`
@@ -269,14 +257,14 @@
 
 > Should return the updated record
 ```
-  {
-      "user": {
-          "id": "5",
-          "username": "Elliot",
-          "email": "elliots@email.com",
-          "password": "$2a$12$j5siY2dBHIwm.4CezXAtCOQdQ6bkwLufoKlJIw.yw2oFW.a81LAFy"
-      }
+{
+  "user": {
+    "id": "9",
+    "username": "Arthur",
+    "password": "$2a$12$SH/1wKf05udS4ggLzBA3Ee3J0jI0nBIEhFJe1h9tbsNFxdGXsibci",
+    "email": "arthur@email.com"
   }
+}
 ```
 ##### 401 (Unauthorized)
 ###### Example Response
@@ -310,20 +298,89 @@
 ```
 [
  {
-    "id": 1,
-    "postName": "Weekend trip to Paris",
-    "description": "I had the most wonderful time walking along the Seine!",
-    "imageUrl": "https://loremflickr.com/g/320/240/paris",
-    "userId": 1,
-    "upvotes": [
-        4,
-        5
-    ]
+   "id": 1,
+   "postName": "Weekday Trip to Paris",
+   "description": "I had the most wonderful time because I don't have a job",
+   "imageUrl": "https://loremflickr.com/g/320/240/paris",
+   "userId": 1,
+   "upvotes": [
+       4,
+       5,
+       7,
+       8
+   ]
+ },
+ {
+   "id": 2,
+   "postName": "A man's best friend",
+   "description": "I love my dog",
+   "imageUrl": "https://loremflickr.com/320/240/dog",
+   "userId": 2,
+   "upvotes": [
+       1,
+       4,
+       7,
+       9
+   ]
+ },
+ {
+   "id": 3,
+   "postName": "Beautiful portrait",
+   "description": "Just as beautiful as the Mona Lisa",
+   "imageUrl": "https://loremflickr.com/320/240/paris,girl/all",
+   "userId": 3,
+   "upvotes": [
+       1,
+       7,
+       8
+   ]
+ },
+ {
+   "id": 4,
+   "postName": "Morning ritual",
+   "description": "There's nothing better than a cup of coffee in the morning",
+   "imageUrl": "https://loremflickr.com/320/240/coffee",
+   "userId": 4,
+   "upvotes": [
+       2
+   ]
+ },
+ {
+   "id": 5,
+   "postName": "Sunday mood",
+   "description": "My favorite past time activity",
+   "imageUrl": "https://loremflickr.com/320/240/sleep",
+   "userId": 5,
+   "upvotes": [
+       1,
+       4
+   ]
+ },
+ {
+   "id": 6,
+   "postName": "Exploring nature",
+   "description": "Summer is here!",
+   "imageUrl": "https://loremflickr.com/320/240/sun",
+   "userId": 6,
+   "upvotes": [
+       2,
+       4
+   ]
+ },
+ {
+   "id": 7,
+   "postName": "Wonderful sculpture",
+   "description": "Pretty statue I found during my adventures",
+   "imageUrl": "https://loremflickr.com/320/240/statue",
+   "userId": 1,
+   "upvotes": [
+       1,
+       4
+   ]
  },
 ]
 ```
 
-***
 ### Get a single post
 ***
 *method url*: `/api/posts/:id`
@@ -335,13 +392,15 @@
 
 ###### Example response
 ```
+
 {
-    "id": 1,
-    "postName": "Weekend trip to Paris",
-    "description": "I had the most wonderful time walking along the Seine!",
-    "imageUrl": "https://loremflickr.com/g/320/240/paris",
-    "userId": 1
+  "id": 9,
+  "postName": "My Birthday",
+  "description": "Happy Birthday to me!",
+  "imageUrl": "https://loremflickr.com/320/240/cake",
+  "userId": 1
 }
+
 ```
 
 ##### 404 (Not Found)
@@ -349,11 +408,12 @@
 ###### Example response
 ```
 {
-    "message": "The post with the specified ID does not exist."
+  "message": "The post with the specified ID does not exist."
 }
 ```
 
 ### Get posts from a specific user
+***
 *method url*: `/api/posts/?userId=${userId}`
 
 *http method*: **[GET]**
@@ -365,20 +425,31 @@
 ```
 [
   {
-      "id": 1,
-      "postName": "Weekend trip to Paris",
-      "description": "I had the most wonderful time walking along the Seine!",
-      "imageUrl": "https://loremflickr.com/g/320/240/paris",
-      "userId": 1,
-      "upvotes": [
-          4,
-          5
-      ]
+    "id": 2,
+    "postName": "A man's best friend",
+    "description": "I love my dog",
+    "imageUrl": "https://loremflickr.com/320/240/dog",
+    "userId": 2,
+    "upvotes": [
+        1,
+        4,
+        7,
+        9
+    ]
+  },
+  {
+    "id": 8,
+    "postName": "People watching",
+    "description": "I like taking pictures of people",
+    "imageUrl": "https://loremflickr.com/320/240/man",
+    "userId": 2,
+    "upvotes": [
+        1
+    ]
   }
-
 ]
 ```
-***
+
 ### Create a post
 ***
 *method url*: `/api/posts`
@@ -403,9 +474,9 @@
 ###### Example Request
 ```
   {
-    "postName": "Our trip to Venice",
-    "imageUrl": "image link",
-    "description": "I loved this square!",
+    "postName": "A man's best friend",
+    "imageUrl": "https://loremflickr.com/320/240/dog",
+    "description": "A picture of my dog",
   }
   ```
 
@@ -414,31 +485,32 @@
 ###### Example Response
 ```
 {
-    "id": 2,
-    "postName": "Our trip to Venice",
-    "description": "I took this",
-    "imageUrl": "image link",
-    "userId": 1
+  "id": 13,
+  "postName": "A man's best friend",
+  "description": "I love my dog",
+  "imageUrl": "https://loremflickr.com/320/240/dog",
+  "userId": 5,
+  "upvotes": []
 }
 
 ```
 ##### 401 (Unauthorized)
 ###### Example Response
 ```
-  {
-    "No token provided, must be set on the Authorization Header"
-  }
+{
+  "No token provided, must be set on the Authorization Header"
+}
 ```
 
 ##### 403 (Forbidden)
 ###### Example Response
 ```
-  {
-    "name": "JsonWebTokenError",
-    "message": "invalid token"
-  }
+{
+  "name": "JsonWebTokenError",
+  "message": "invalid token"
+}
 ```
-***
+
 ### Edit a post
 ***
 *method url*: `/api/posts/:id`
@@ -465,9 +537,9 @@
 ###### Example request
 ```
   {
-    "postName": "my 8th birthday",
-    "imageUrl": "image link",
-    "description": "tbt
+    "postName": "A man's best friend",
+    "description": "I love my dogs",
+    "imageUrl": "https://loremflickr.com/320/240/dog"
   }
   ```
 #### Response
@@ -475,19 +547,19 @@
 ###### Example Response
 ```
   {
-      "post": {
-          "id": "2",
-          "postName": "My 8th birthday",
-          "imageUrl": "image link",
-          "description": "tbt"
-      }
+    "postName": "A man's best friend",
+    "description": "I love my dogs",
+    "imageUrl": "https://loremflickr.com/320/240/dog",
+    "id": 13,
+    "userId": 5,
+    "upvotes": []
   }
 ```
 ##### 401 (Unauthorized)
 ###### Example Response
 ```
 {
-    "error": "No token provided, must be set on the Authorization Header"
+  "error": "No token provided, must be set on the Authorization Header"
 }
 ```
 ##### 403 (Forbidden)
@@ -498,7 +570,7 @@
     "message": "invalid token"
   }
 ```
-***
+
 ### Delete a Post
 ***
 *method url*: `/api/posts/:id (where id is the id of the post`
@@ -535,10 +607,10 @@
     "message": "invalid token"
   }
 ```
-***
+
 ### Get upvotes for a post
 ***
-*method url*: `/api/posts/upvotes/:postId (id of the post)`
+*method url*: `/api/posts/upvotes/:postId`
 
 *http method*: **[GET]**
 
@@ -548,22 +620,22 @@
 ```
 {
   "success": true,
-  "postId": "1",
-  "upvotes": 2
+  "postId": "13",
+  "upvotes": 0
 }
 ```
 
 ##### 404 (Not Found)
 ###### Example Response
 ```
-  {
-    "message": "The post with the specified ID does not exist."
-  }
+{
+  "message": "The post with the specified ID does not exist."
+}
 ```
-***
+
 ### Upvote a Post
 ***
-*method url*: `/api/posts/upvote/:postId/:userId`
+*method url*: `/api/posts/upvote/:postId`
 
 *http method*: **[PUT]**
 
@@ -578,11 +650,11 @@
 ##### 200 (OK)
 ###### Example Response
 ```
-  {
-    "success": true,
-    "userId": "8",
-    "postId": "1"
-  }
+{
+  "success": true,
+  "userId": 5,
+  "postId": "3"
+}
 ```
 
 ##### 500 (Internal Server Error)
@@ -592,7 +664,7 @@
     "errorMessage": "Like already in database"
   }
 ```
-***
+
 ### Downvote a Post
 ***
 *method url*: `/api/posts/upvote/:postId/:userId`
@@ -612,8 +684,8 @@
 ```
 {
   "success": true,
-  "userId": "8",
-  "postId": "1"
+  "userId": 5,
+  "postId": "3"
 }
 ```
 
