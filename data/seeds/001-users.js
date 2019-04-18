@@ -28,6 +28,11 @@ exports.seed = function(knex, Promise) {
           password: '$2a$10$vBEEx72D56pUbuzQ0ne5VeeHzkhpi/i7YzVsKOP/N5OAoFSGN7ifi',
           email: 'elliot@gmail.com',
         },
+        {
+          username: 'Doug',
+          password: '$2a$10$vBEEx72D56pUbuzQ0ne5VeeHzkhpi/i7YzVsKOP/N5OAoFSGN7ifi',
+          email: 'doug@gmail.com',
+        },
       ]);
     });
 };
