@@ -5,11 +5,16 @@ const db = require('../data/dbConfig');
 describe('authRoutes', () => {
   let token;
   beforeAll(async () => {
-    const admin = { username: 'admin', password: 'admin', email: 'admin@email.com' };
-    await request(server).post('/api/register').send(admin);
-    const res = await request(server).post('/api/login').send({ username: admin.username, password: admin.password });
+    const testUser = { username: 'test', password: 'test', email: 'test@email.com' };
+    await request(server).post('/api/register').send(testUser);
+    const res = await request(server).post('/api/login').send({ username: testUser.username, password: testUser.password });
     token = JSON.parse(res.text).token;
   });
+
+  afterAll(async () => {
+    db.destroy();
+  });
+
   it('should set the testing environment', () => {
     expect(process.env.DB_ENV).toBe('testing');
   });
@@ -59,7 +64,7 @@ describe('authRoutes', () => {
       const newUser = { username: 'Test1', password: 'password1', email: 'test@email.com' };
       await request(server).post('/api/register').send(newUser);
 
-      return request(server).post('/api/register').send(newUser)
+      await request(server).post('/api/register').send(newUser)
         .then((response) => {
           expect(response.body.errorMessage).toEqual('The user could not be created.');
         });
@@ -68,14 +73,18 @@ describe('authRoutes', () => {
       const newUser = { username: 'Test1', password: 'password1', email: 'test@email.com' };
       await request(server).post('/api/register').send(newUser);
 
-      return request(server).post('/api/register').send(newUser)
+      await request(server).post('/api/register').send({ username: 'Test1', password: 'password1', email: 'test@email.com' })
         .then((response) => {
           expect(response.status).toBe(500);
+          expect(response.body.errorMessage).toBe('The user could not be created.');
         });
     });
   });
 
   describe('POST, /api/login', () => {
+    beforeEach(async () => {
+      await db('users').truncate();
+    });
     afterEach(async () => {
       await db('users').truncate();
     });
@@ -83,7 +92,7 @@ describe('authRoutes', () => {
     it('should return status code 200 OK when request is successful', async () => {
       const newUser = { username: 'Test1', password: 'password1', email: 'test@email.com' };
       const user = await request(server).post('/api/register').send(newUser);
-      const response = await request(server).post('/api/login').send({ username: newUser.username, password: newUser.password }).set('Authorization', token);
+      const response = await request(server).post('/api/login').set('Authorization', token).send({ username: newUser.username, password: newUser.password });
       expect(response.status).toBe(200);
     });
     it('should return JSON', async () => {

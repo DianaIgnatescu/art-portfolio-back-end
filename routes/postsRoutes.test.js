@@ -11,7 +11,14 @@ describe('postsRoutes', () => {
     token = JSON.parse(res.text).token;
   });
 
+  afterAll(async () => {
+    db.destroy();
+  });
+
   describe('GET, /api/posts', () => {
+    beforeEach(async () => {
+      await db('posts').truncate();
+    });
     afterEach(async () => {
       await db('posts').truncate();
     });
@@ -31,6 +38,9 @@ describe('postsRoutes', () => {
   });
 
   describe('GET, /api/posts/:id', () => {
+    beforeEach(async () => {
+      await db('posts').truncate();
+    });
     afterEach(async () => {
       await db('posts').truncate();
     });
@@ -94,6 +104,9 @@ describe('postsRoutes', () => {
   });
 
   describe('POST, /api/posts', () => {
+    beforeEach(async () => {
+      await db('posts').truncate();
+    });
     afterEach(async () => {
       await db('posts').truncate();
     });
@@ -114,7 +127,7 @@ describe('postsRoutes', () => {
         postName: 'Test',
         description: 'This is a test',
         imageUrl: 'https://loremflickr.com/320/240',
-        userId: 1,
+        userId: 2,
       };
       const response = await request(server)
         .post('/api/posts')
@@ -164,6 +177,9 @@ describe('postsRoutes', () => {
   });
 
   describe('DELETE, /api/posts/:id', () => {
+    beforeEach(async () => {
+      await db('posts').truncate();
+    });
     // needs authorization
     afterEach(async () => {
       await db('posts').truncate();
@@ -213,6 +229,9 @@ describe('postsRoutes', () => {
   });
 
   describe('PUT, /api/posts/:id', () => {
+    beforeEach(async () => {
+      await db('posts').truncate();
+    });
     // needs authorization
     afterEach(async () => {
       await db('posts').truncate();
@@ -260,7 +279,7 @@ describe('postsRoutes', () => {
         postName: 'Test post',
         description: 'This is a test',
         imageUrl: 'https://loremflickr.com/320/240',
-        userId: 1,
+        // userId: 1,
       };
       await request(server).post('/api/posts/').set('Authorization', token).send(newPost);
 
@@ -268,7 +287,6 @@ describe('postsRoutes', () => {
         postName: 'Test post2',
         description: 'This is a test2',
         imageUrl: 'https://loremflickr.com/320/240',
-        userId: 1,
       })
         .then((response) => {
           expect(response.body.post).toEqual({
@@ -276,13 +294,15 @@ describe('postsRoutes', () => {
             postName: 'Test post2',
             description: 'This is a test2',
             imageUrl: 'https://loremflickr.com/320/240',
-            userId: 1,
           });
         });
     });
   });
 
   describe('GET, /api/posts/upvotes/:postId', () => {
+    beforeEach(async () => {
+      await db('posts').truncate();
+    });
     afterEach(async () => {
       await db('posts').truncate();
     });

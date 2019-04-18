@@ -10,6 +10,9 @@ describe('postsHelpers', () => {
   });
 
   describe('getPosts', () => {
+    beforeEach(async () => {
+      await db('posts').truncate();
+    });
     afterEach(async () => {
       await db('posts').truncate();
     });
@@ -20,6 +23,9 @@ describe('postsHelpers', () => {
   });
 
   describe('getPostById', () => {
+    beforeEach(async () => {
+      await db('posts').truncate();
+    });
     afterEach(async () => {
       await db('posts').truncate();
     });
@@ -34,6 +40,9 @@ describe('postsHelpers', () => {
   });
 
   describe('getPostsfromUser', () => {
+    beforeEach(async () => {
+      await db('posts').truncate();
+    });
     afterEach(async () => {
       await db('posts').truncate();
     });
@@ -56,6 +65,9 @@ describe('postsHelpers', () => {
     });
   });
   describe('addPost', () => {
+    beforeEach(async () => {
+      await db('posts').truncate();
+    });
     afterEach(async () => {
       await db('posts').truncate();
     });
@@ -70,6 +82,9 @@ describe('postsHelpers', () => {
     });
   });
   describe('deletePost', () => {
+    beforeEach(async () => {
+      await db('posts').truncate();
+    });
     afterEach(async () => {
       await db('posts').truncate();
     });

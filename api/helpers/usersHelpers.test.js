@@ -2,11 +2,20 @@ const db = require('../../data/dbConfig');
 const Users = require('../../api/helpers/usersHelpers');
 const Auth = require('../../api/helpers/authHelpers');
 
-xdescribe('usersHelpers', () => {
+describe('usersHelpers', () => {
+  beforeEach(async () => {
+    await db('users').truncate();
+  });
   afterEach(async () => {
     await db('users').truncate();
   });
   describe('getUsers', () => {
+    beforeEach(async () => {
+      await db('users').truncate();
+    });
+    afterEach(async () => {
+      await db('users').truncate();
+    });
     it('should return a list of all users in the database', async () => {
       const users = await Users.getUsers();
       expect(users).toHaveLength(0);
@@ -14,6 +23,12 @@ xdescribe('usersHelpers', () => {
   });
 
   describe('getUserById', () => {
+    beforeEach(async () => {
+      await db('users').truncate();
+    });
+    afterEach(async () => {
+      await db('users').truncate();
+    });
     it('should return a given user from the database by its ID', async () => {
       const newUser = Auth.registerUser({ username: 'Test', password: 'password', email: 'test@email.com' });
       const result = await Users.getUserById(1);
@@ -23,6 +38,12 @@ xdescribe('usersHelpers', () => {
   });
 
   describe('deleteUser', () => {
+    beforeEach(async () => {
+      await db('users').truncate();
+    });
+    afterEach(async () => {
+      await db('users').truncate();
+    });
     it('should delete a given user record from the the database', async () => {
       const newUser1 = Auth.registerUser({ username: 'Test1', password: 'password1', email: 'test1@email.com' });
       const newUsert2 = Auth.registerUser({ username: 'Test2', password: 'password2', email: 'test2@email.com' });

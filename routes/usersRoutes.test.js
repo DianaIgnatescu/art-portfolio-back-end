@@ -11,7 +11,14 @@ describe('usersRoutes', () => {
     token = JSON.parse(res.text).token;
   });
 
+  afterAll(async () => {
+    db.destroy();
+  });
+
   describe('GET /api/users', () => {
+    beforeEach(async () => {
+      await db('users').truncate();
+    });
     afterEach(async () => {
       await db('users').truncate();
     });
@@ -29,18 +36,21 @@ describe('usersRoutes', () => {
   });
 
   describe('GET /api/users/:id', () => {
+    beforeEach(async () => {
+      await db('users').truncate();
+    });
     afterEach(async () => {
       await db('users').truncate();
     });
     it('should return status code 200 when request is successful', async () => {
-      const newUser = await request(server).post('/api/register').send({ username: 'test', password: 'password', email: 'test@email.com' });
-      const response = await request(server).get(`/api/users/1`).set('Authorization', token);
+      await request(server).post('/api/register').send({ username: 'test', password: 'password', email: 'test@email.com' });
+      const response = await request(server).get('/api/users/1').set('Authorization', token);
 
-      expect(response.status).toBe(200);
+      expect(response.status).toEqual(200);
     });
     it('should return the correct response body', async () => {
       const newUser = await request(server).post('/api/register').send({ username: 'test', password: 'password', email: 'test@email.com' });
-      const response = await request(server).get(`/api/users/1`).set('Authorization', token);
+      const response = await request(server).get('/api/users/1').set('Authorization', token);
 
       expect(response.body.username).toBe('test');
     });
@@ -53,12 +63,15 @@ describe('usersRoutes', () => {
   });
 
   describe('DELETE /api/users/:id', () => {
+    beforeEach(async () => {
+      await db('users').truncate();
+    });
     afterEach(async () => {
       await db('users').truncate();
     });
     it('should return status code 200 when request is successful', async () => {
-      const newUser = { username: 'test', password: 'password', email: 'test@email.com' };
-      await request(server).post('/api/register/').set('Authorization', token).send(newUser);
+      const newUser4 = { username: 'test4', password: 'password4', email: 'test4@email.com' };
+      await request(server).post('/api/register/').set('Authorization', token).send(newUser4);
 
       return request(server).delete('/api/users/1').set('Authorization', token)
         .then((response) => {
@@ -78,6 +91,9 @@ describe('usersRoutes', () => {
   });
 
   describe('PUT /api/users/:id', () => {
+    beforeEach(async () => {
+      await db('users').truncate();
+    });
     afterEach(async () => {
       await db('users').truncate();
     });
@@ -85,9 +101,9 @@ describe('usersRoutes', () => {
       const newUser = { username: 'test', password: 'password', email: 'test@email.com' };
       await request(server).post('/api/register/').set('Authorization', token).send(newUser);
 
-      return request(server).put('/api/users/1').set('Authorization', token).send({ username: 'test1', password: 'password', email: 'test@email.com' })
+      const result = await request(server).put('/api/users/1').set('Authorization', token).send({ username: 'test1', password: 'password1', email: 'test1@email.com' })
         .then((response) => {
-          expect(response.status).toBe(200);
+          expect(response.status).toEqual(200);
         });
     });
 
