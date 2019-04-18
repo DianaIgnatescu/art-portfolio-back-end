@@ -105,7 +105,7 @@ router.put('/:id', authenticate, async (req, res) => {
     if (!data) {
       res.status(404).json({ message: 'The post with the specified id does not exist.' });
     } else {
-      const upvotes = await Posts.getUpvotes(id);
+      const upvotes = await Posts.getAllUpvotes(id);
       res.status(200).json({ ...post, postId: Number(id), userId, upvotes });
     }
   } catch (error) {
