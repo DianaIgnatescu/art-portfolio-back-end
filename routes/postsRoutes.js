@@ -127,8 +127,9 @@ router.get('/upvotes/:postId', async (req, res) => {
   res.status(200).json({ success: true, postId, upvotes });
 });
 
-router.put('/upvote/:postId/:userId', async (req, res) => {
-  const { postId, userId } = req.params;
+router.put('/upvote/:postId', async (req, res) => {
+  const { postId } = req.params;
+  const userId = req.decoded.subject;
   try {
     const post = await Posts.getPostById(postId);
     if (!post) {
@@ -138,15 +139,16 @@ router.put('/upvote/:postId/:userId', async (req, res) => {
     if (!user) {
       throw new Error('User not found');
     }
-    const result = await Posts.upvote(userId, postId);
+    await Posts.upvote(userId, postId);
     res.status(200).json({ success: true, userId, postId });
   } catch (error) {
     res.status(500).json({ errorMessage: error.message });
   }
 });
 
-router.put('/downvote/:postId/:userId', async (req, res) => {
-  const { postId, userId } = req.params;
+router.put('/downvote/:postId', async (req, res) => {
+  const { postId } = req.params;
+  const userId = req.decoded.subject;
   try {
     const post = await Posts.getPostById(postId);
     if (!post) {
@@ -156,7 +158,7 @@ router.put('/downvote/:postId/:userId', async (req, res) => {
     if (!user) {
       throw new Error('User not found');
     }
-    const result = await Posts.downvote(userId, postId);
+    await Posts.downvote(userId, postId);
     res.status(200).json({ success: true, userId, postId });
   } catch (error) {
     res.status(500).json({ errorMessage: error.message });
