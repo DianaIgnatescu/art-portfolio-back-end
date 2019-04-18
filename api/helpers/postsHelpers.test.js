@@ -1,12 +1,18 @@
 const db = require('../../data/dbConfig');
 const Posts = require('../../api/helpers/postsHelpers');
 
-xdescribe('postsHelpers', () => {
+describe('postsHelpers', () => {
+  beforeEach(async () => {
+    await db('posts').truncate();
+  });
   afterEach(async () => {
     await db('posts').truncate();
   });
 
   describe('getPosts', () => {
+    afterEach(async () => {
+      await db('posts').truncate();
+    });
     it('should return a list of all posts', async () => {
       const posts = await Posts.getPosts();
       expect(posts).toHaveLength(0);
@@ -14,6 +20,9 @@ xdescribe('postsHelpers', () => {
   });
 
   describe('getPostById', () => {
+    afterEach(async () => {
+      await db('posts').truncate();
+    });
     it('should return a given post by ID', async () => {
       const newPost = Posts.addPost({
         postName: 'My birthday post', description: 'My birthday', imageUrl: 'https://i.stack.imgur.com/GsDIl.jpg', userId: 1,
@@ -25,6 +34,9 @@ xdescribe('postsHelpers', () => {
   });
 
   describe('getPostsfromUser', () => {
+    afterEach(async () => {
+      await db('posts').truncate();
+    });
     it('should return a list of all posts from a specific user', async () => {
       const newPost1 = Posts.addPost({
         postName: 'My first post', description: 'My birthday', imageUrl: 'https://i.stack.imgur.com/GsDIl.jpg', userId: 1,
@@ -44,6 +56,9 @@ xdescribe('postsHelpers', () => {
     });
   });
   describe('addPost', () => {
+    afterEach(async () => {
+      await db('posts').truncate();
+    });
     it('should insert the given post into the database', async () => {
       const newPost = {
         postName: 'My post', description: 'My Adventure', imageUrl: 'https://i.stack.imgur.com/GsDIl.jpg', userId: 1,
@@ -55,6 +70,9 @@ xdescribe('postsHelpers', () => {
     });
   });
   describe('deletePost', () => {
+    afterEach(async () => {
+      await db('posts').truncate();
+    });
     it('should delete a given post from the database by its ID', async () => {
       const newPost1 = Posts.addPost({
         postName: 'My first post', description: 'My post description', imageUrl: 'https://i.stack.imgur.com/GsDIl.jpg', userId: 1,

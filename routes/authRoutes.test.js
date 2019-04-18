@@ -2,12 +2,22 @@ const request = require('supertest');
 const server = require('../api/server');
 const db = require('../data/dbConfig');
 
-xdescribe('authRoutes', () => {
+describe('authRoutes', () => {
+  let token;
+  beforeAll(async () => {
+    const admin = { username: 'admin', password: 'admin', email: 'admin@email.com' };
+    await request(server).post('/api/register').send(admin);
+    const res = await request(server).post('/api/login').send({ username: admin.username, password: admin.password });
+    token = JSON.parse(res.text).token;
+  });
   it('should set the testing environment', () => {
     expect(process.env.DB_ENV).toBe('testing');
   });
 
   describe('POST, /api/register', () => {
+    beforeEach(async () => {
+      await db('users').truncate();
+    });
     afterEach(async () => {
       await db('users').truncate();
     });
@@ -73,7 +83,7 @@ xdescribe('authRoutes', () => {
     it('should return status code 200 OK when request is successful', async () => {
       const newUser = { username: 'Test1', password: 'password1', email: 'test@email.com' };
       const user = await request(server).post('/api/register').send(newUser);
-      const response = await request(server).post('/api/login').send({ username: newUser.username, password: newUser.password });
+      const response = await request(server).post('/api/login').send({ username: newUser.username, password: newUser.password }).set('Authorization', token);
       expect(response.status).toBe(200);
     });
     it('should return JSON', async () => {
