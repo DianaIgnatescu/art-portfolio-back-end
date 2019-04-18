@@ -7,16 +7,22 @@ const db = require('../data/dbConfig');
 const Posts = require('../api/helpers/postsHelpers');
 const Users = require('../api/helpers/usersHelpers');
 
+const combinePostWithUpvotes = (post, likes) => {
+  const upvotes = likes
+    .filter(like => like.postId === post.id)
+    .map(like => like.userId)
+    .concat()
+    .sort();
+  return { ...post, upvotes };
+};
+
 const combinePostsWithUpvotes = (posts, likes) => posts.map((post) => {
   const upvotes = likes
     .filter(like => like.postId === post.id)
     .map(like => like.userId)
     .concat()
     .sort();
-  return {
-    ...post,
-    upvotes,
-  };
+  return { ...post, upvotes };
 });
 
 router.get('/', (req, res) => {
@@ -105,8 +111,10 @@ router.put('/:id', authenticate, async (req, res) => {
     if (!data) {
       res.status(404).json({ message: 'The post with the specified id does not exist.' });
     } else {
-      const upvotes = await Posts.getAllUpvotes(id);
-      res.status(200).json({ ...post, postId: Number(id), userId, upvotes });
+      const likes = await Posts.getAllUpvotes(id);
+      const updatedPost = { ...post, postId: Number(id), userId };
+      const updatedPostWithUpvotes = combinePostWithUpvotes(updatedPost, likes);
+      res.status(200).json(updatedPostWithUpvotes);
     }
   } catch (error) {
     res.status(500).json({ error: 'The post information could not be modified.' });
