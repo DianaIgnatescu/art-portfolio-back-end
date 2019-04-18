@@ -282,9 +282,9 @@
   }
 ```
 
-***
+
 ## Posts
-***
+
 ### Get all posts
 ***
 *method url*: `/api/posts`
