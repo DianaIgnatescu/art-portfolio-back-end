@@ -105,7 +105,7 @@ router.put('/:id', authenticate, (req, res) => {
       if (!data) {
         res.status(404).json({ message: 'The post with the specified id does not exist.' });
       } else {
-        res.status(200).json({ ...post, postId: id, userId });
+        res.status(200).json({ ...post, postId: Number(id), userId });
       }
     })
     .catch((error) => {
