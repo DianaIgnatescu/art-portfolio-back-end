@@ -1,46 +1,65 @@
 const db = require('../../data/dbConfig');
 
-const getPosts = () => {
-  return db('posts');
+const getPosts = () => db('posts');
+
+const getPostById = id => db('posts')
+  .where({ id })
+  .first();
+
+const getPostsFromUser = id => db('posts').where({ userId: id });
+
+const addPost = post => db('posts')
+  .insert(post)
+  .then(ids => getPostById(ids[0]));
+
+const deletePost = id => db('posts')
+  .where({ id })
+  .del();
+
+const editPost = (post, id) => db('posts')
+  .where({ id })
+  .update(post);
+
+const getAllUpvotes = async () => db('likes');
+
+const getUpvotes = async (postId) => {
+  const query = await db('likes').where({ postId }).count('id as CNT');
+  const total = query[0].CNT;
+  return total;
 };
 
-const getPostById = (id) => {
-  return db('posts')
-      .where({ id})
-      .first();
+const upvote = async (userId, postId) => {
+  const query = await db('likes')
+    .where({ postId })
+    .where({ userId })
+    .count('id as CNT');
+
+  const total = query[0].CNT;
+
+  if (total) {
+    throw new Error('Like already in database');
+  } else {
+    return await db('likes').insert({ userId, postId });
+  }
 };
 
-const getPostsFromUser = (userId) => {
-  return db('posts as p')
-    .join('users as u', 'u.id', 'p.user_id')
-    .select('p.id', 'p.text', 'u.name as postedBy')
-    .where('p.user_id', userId);
-};
+const downvote = async (userId, postId) => {
+  const query = await db('likes')
+    .where({ postId })
+    .where({ userId })
+    .count('id as CNT');
 
-const addPost = (post) => {
-  return db('posts')
-    .insert(post)
-    .then(ids => {
-      return getPostById(ids[0]);
-    });
-};
+  const total = query[0].CNT;
 
-const deletePost = (id) => {
-  return db('posts')
-    .where({id})
-    .del();
-};
-
-const editPost = (post, id) => {
-  return db('posts')
-    .where({ id })
-    .update(post);
-};
-
-const upvote = (upvoteCount, id) => {
-  return db('posts')
-      .where({ id })
-      .update({ upvotes: upvoteCount + 1 })
+  if (!total) {
+    throw new Error('Like not in database');
+  } else {
+    return await db('likes')
+      .where({ postId })
+      .where({ userId })
+      .first()
+      .del();
+  }
 };
 
 module.exports = {
@@ -50,5 +69,8 @@ module.exports = {
   addPost,
   deletePost,
   editPost,
-  upvote
+  upvote,
+  downvote,
+  getUpvotes,
+  getAllUpvotes,
 };

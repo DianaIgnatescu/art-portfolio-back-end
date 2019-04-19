@@ -1,15 +1,7 @@
 
 exports.up = function (knex, Promise) {
-  return knex.schema.createTable('posts', (tbl) => {
+  return knex.schema.createTable('likes', (tbl) => {
     tbl.increments();
-    tbl
-      .string('postName', 255)
-      .notNullable();
-    tbl
-      .string('description', 255);
-    tbl
-      .string('imageUrl', 255)
-      .notNullable();
     tbl
       .integer('userId')
       .unsigned()
@@ -17,9 +9,16 @@ exports.up = function (knex, Promise) {
       .inTable('users')
       .onDelete('CASCADE')
       .onUpdate('CASCADE');
+    tbl
+      .integer('postId')
+      .unsigned()
+      .references('id')
+      .inTable('posts')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
   });
 };
 
 exports.down = function (knex, Promise) {
-  return knex.schema.dropTableIfExists('posts');
+  return knex.schema.dropTableIfExists('likes');
 };

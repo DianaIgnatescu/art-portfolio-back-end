@@ -1,10 +1,29 @@
-const { authenticate } = require('../authenticate');
 const express = require('express');
 const bcrypt = require('bcryptjs');
+const { authenticate } = require('../authenticate');
+
 const router = express.Router();
 const db = require('../data/dbConfig');
 const Posts = require('../api/helpers/postsHelpers');
 const Users = require('../api/helpers/usersHelpers');
+
+const combinePostWithUpvotes = (post, likes) => {
+  const upvotes = likes
+    .filter(like => like.postId === post.id)
+    .map(like => like.userId)
+    .concat()
+    .sort();
+  return { ...post, upvotes };
+};
+
+const combinePostsWithUpvotes = (posts, likes) => posts.map((post) => {
+  const upvotes = likes
+    .filter(like => like.postId === post.id)
+    .map(like => like.userId)
+    .concat()
+    .sort();
+  return { ...post, upvotes };
+});
 
 router.get('/', (req, res) => {
   if (req.query && req.query.userId) {
@@ -13,7 +32,9 @@ router.get('/', (req, res) => {
         if (!posts) {
           res.status(404).json({ message: 'The user with the specified ID does not have any posts' });
         } else {
-          res.status(200).json(posts)
+          Posts.getAllUpvotes().then((likes) => {
+            res.status(200).json(combinePostsWithUpvotes(posts, likes));
+          });
         }
       })
       .catch((error) => {
@@ -22,10 +43,12 @@ router.get('/', (req, res) => {
   } else {
     Posts.getPosts()
       .then((posts) => {
-        res.status(200).json(posts);
+        Posts.getAllUpvotes().then((likes) => {
+          res.status(200).json(combinePostsWithUpvotes(posts, likes));
+        });
       })
       .catch((error) => {
-        res.status(500).json({ error: 'The posts could not be retrieved.'});
+        res.status(500).json({ error: 'The posts could not be retrieved.' });
       });
   }
 });
@@ -35,32 +58,36 @@ router.get('/:id', (req, res) => {
   Posts.getPostById(id)
     .then((post) => {
       if (!post) {
-        res.status(404).json({ message: 'The post with the specified ID does not exist.'});
+        res.status(404).json({ message: 'The post with the specified ID does not exist.' });
       } else {
         res.status(200).json(post);
       }
     })
     .catch((error) => {
-      res.status(500).json({ error: 'The post information could not be retrieved.'});
+      res.status(500).json({ error: 'The post information could not be retrieved.' });
     });
 });
 
-router.post('/', (req, res) => {
-  const { postName, userId, imageUrl, description, upvotes } = req.body;
-  const post = req.body;
+router.post('/', authenticate, (req, res) => {
+  const {
+    postName, imageUrl, description,
+  } = req.body;
+  const userId = req.decoded.subject;
   if (!postName || !userId || !imageUrl) {
-    res.status(400).json({ errorMessage: 'Please provide information for the post.'});
+    res.status(400).json({ errorMessage: 'Please provide information for the post.' });
   }
-  Posts.addPost({ postName, userId, imageUrl, description, upvotes })
-    .then((post) => {
-      res.status(201).json(post);
+  Posts.addPost({
+    postName, userId, imageUrl, description,
+  })
+    .then((newPost) => {
+      res.status(201).json({ ...newPost, upvotes: [] });
     })
     .catch((error) => {
-      res.status(500).json({ error: 'There was an error while saving the post to the database.'});
+      res.status(500).json({ error: 'There was an error while saving the post to the database.' });
     });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', authenticate, (req, res) => {
   const { id } = req.params;
   Posts.deletePost(id)
     .then((data) => {
@@ -75,34 +102,67 @@ router.delete('/:id', (req, res) => {
     });
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', authenticate, async (req, res) => {
   const { id } = req.params;
   const post = req.body;
-  const { postName, userId, imageUrl, description, upvotes } = req.body;
-  Posts.editPost(post, id)
-    .then((data) => {
-      if (!data) {
-        res.status(404).json({ message: 'The post with the specified id does not exist.' });
-      } else {
-        res.status(200).json({ post: { id, ...post} });
-      }
-    })
-    .catch((error) => {
-      res.status(500).json({ error: 'The post information could not be modified.' });
-    });
+  const userId = req.decoded.subject;
+  try {
+    const data = await Posts.editPost(post, id);
+    if (!data) {
+      res.status(404).json({ message: 'The post with the specified id does not exist.' });
+    } else {
+      const likes = await Posts.getAllUpvotes(id);
+      const updatedPost = { ...post, id: Number(id), userId };
+      const updatedPostWithUpvotes = combinePostWithUpvotes(updatedPost, likes);
+      res.status(200).json(updatedPostWithUpvotes);
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'The post information could not be modified.' });
+  }
 });
 
-router.put('/upvote/:id', async (req, res) => {
-  const { id } = req.params;
-  const post = await Posts.getPostById(id);
-  const upvotes = post.upvotes;
-    Posts.upvote (upvotes, id)
-      .then((data) => {
-        res.status(200).json({ ...post, upvotes: upvotes + 1})
-      })
-      .catch((error) => {
-        res.status(500).json({errorMessage: 'The post could not be upvoted.' });
-      });
+router.get('/upvotes/:postId', async (req, res) => {
+  const { postId } = req.params;
+  const upvotes = await Posts.getUpvotes(postId);
+  res.status(200).json({ success: true, postId, upvotes });
+});
+
+router.put('/upvote/:postId', authenticate, async (req, res) => {
+  const { postId } = req.params;
+  const userId = req.decoded.subject;
+  try {
+    const post = await Posts.getPostById(postId);
+    if (!post) {
+      throw new Error('Post not found');
+    }
+    const user = await Users.getUserById(userId);
+    if (!user) {
+      throw new Error('User not found');
+    }
+    await Posts.upvote(userId, postId);
+    res.status(200).json({ success: true, userId, postId });
+  } catch (error) {
+    res.status(500).json({ errorMessage: error.message });
+  }
+});
+
+router.put('/downvote/:postId', authenticate, async (req, res) => {
+  const { postId } = req.params;
+  const userId = req.decoded.subject;
+  try {
+    const post = await Posts.getPostById(postId);
+    if (!post) {
+      throw new Error('Post not found');
+    }
+    const user = await Users.getUserById(userId);
+    if (!user) {
+      throw new Error('User not found');
+    }
+    await Posts.downvote(userId, postId);
+    res.status(200).json({ success: true, userId, postId });
+  } catch (error) {
+    res.status(500).json({ errorMessage: error.message });
+  }
 });
 
 module.exports = router;

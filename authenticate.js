@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const jwtKey = process.env.JWT_SECRET || 'This is not what I signed up for, but I shall stay';
+const jwtKey = process.env.JWT_SECRET;
 
 function authenticate(req, res, next) {
   const token = req.get('Authorization');
@@ -22,5 +22,5 @@ function authenticate(req, res, next) {
 
 module.exports = {
   authenticate,
-  jwtKey
+  jwtKey,
 };
